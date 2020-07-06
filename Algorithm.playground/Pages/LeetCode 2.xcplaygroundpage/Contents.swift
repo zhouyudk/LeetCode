@@ -50,7 +50,7 @@ func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
     var ll1 = l1
     var ll2 = l2
     while ll1 != nil || ll2 != nil {
-        var sum = (ll1?.val ?? 0) + (ll2?.val ?? 0) + (tmp.next?.val ?? 0)
+        let sum = (ll1?.val ?? 0) + (ll2?.val ?? 0) + (tmp.next?.val ?? 0)
         tmp.next = ListNode(sum%10)
         tmp = tmp.next!
         if sum >= 10 {

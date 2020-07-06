@@ -27,59 +27,57 @@ import Foundation
  */
 
 /*思路
- 和midIndex的值比较 如果小与 则判断midIndex-1与值的大小
+   首先直接通过nums1和nums2的count总数计算出目标index（对于总数为偶数的情况以较大的一个index作为目标），然后将count小的数组中的元素依次插入到长数组，如果插入index大于等于目标index则找到目标值，直接return
+    最坏的情况为 两个数组完全合并才找到！！！
  */
 func findMedianSortedArrays(_ nums1: [Int], _ nums2: [Int]) -> Double {
-    guard nums1.count > 0 && nums2.count > 0 else { return 0 }
-    //其中一个为空时
-    if nums1.count == 0 || nums2.count == 0 {
-        let nums = nums1+nums2
-        let count = nums.count
-        if count%2 == 1 {
-            return nums[(count-1)/2]
-        } else {
-            return (nums[count/2-1]+nums[count/2])/2
-        }
-    }
-    
-    if nums1.count == 1 && nums2.count == 1 {
-        return (nums1[0]+nums2[0])/2
-    }
+    guard nums1.count > 0 || nums2.count > 0 else { return 0 }
     //比较nums1和2的长度 ，短的插入到长的数组
     var (longNums, shortNums) = nums1.count >= nums2.count ? (nums1,nums2) : (nums2,nums1)
-    var lastIndex: Int = longNums.count/2
-    var minIndex = 0
-    var maxIndex = longNums.count-1
+    var left = 0
+    var right = longNums.count-1
+    var mid: Int = longNums.count/2
     let totalCount = longNums.count + shortNums.count
-    if totalCount%2 == 1 {
-        var targetIndex = totalCount/2
-        
-    } else {
-        var targetIndex1 = totalCount/2 -1
-        var targetIndex2 = totalCount/2
-    }
-    for num in shortNums {
-        
-        if num == longNums[lastIndex] {
-            longNums.insert(num, at: lastIndex+1)
-            minIndex = lastIndex+1
-            if minIndex < maxIndex {
-                continue
-            } else {
-                
-            }
-            
-        } else {
-            
-        }
-        if max - min < 2 {
-            
-        }
-    }
-    return 0
-}
-[1,4,6,8,9,11]
-[2,4,5,7,8]
 
-[1,4]
-[2]
+    let targetIndex = totalCount/2
+
+    for num in shortNums {
+        while left<right {
+            if num == longNums[mid] {
+                break
+            } else if num > longNums[mid] {
+                left = mid+1
+                mid = (left+right)/2
+            } else {
+                right = mid-1
+                mid = (left+right)/2
+            }
+        }
+
+        let insertIndex = num >= longNums[mid] ? mid+1 : mid
+        longNums.insert(num, at: insertIndex)
+        if targetIndex <= insertIndex {
+            if totalCount%2 == 1 {
+                return Double(longNums[targetIndex])
+            } else {
+                return Double(longNums[targetIndex]+longNums[targetIndex-1])/2
+            }
+
+        }
+        left = insertIndex+1
+        right = longNums.count-1
+        mid = (left+right)/2
+    }
+    //针对其中一个数组为空，和for循环结束也没有targetIndex <= insertIndex的情况
+    if totalCount%2 == 1 {
+          return Double(longNums[targetIndex])
+      } else {
+          return Double(longNums[targetIndex]+longNums[targetIndex-1])/2
+      }
+}
+
+findMedianSortedArrays([], [2,3])
+
+/*参考
+ https://leetcode-cn.com/problems/median-of-two-sorted-arrays/solution/shuang-zhi-zhen-by-powcai/
+ */
