@@ -21,8 +21,8 @@ import Foundation
  遍历所有子串
     1、将String转换为Array 方便快速取值
     2、以left和right记录满足条件的子串 边界值。
-    3、单独对初始字符连续出现的情况 进行left和right调整
-    4、
+    3、单独对初始字符连续出现的情况 进行left和right调整，并且当向右连续相等时取得最后一个相等字符的index，当i小于index直接continue（直接从index+1继续遍历）
+    4、如果剩余子串长度无法再大于 已找到子串的长度则直接结束循环
  */
 func longestPalindrome(_ s: String) -> String {
     guard s.count > 1 else { return s }
