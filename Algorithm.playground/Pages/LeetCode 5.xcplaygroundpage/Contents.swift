@@ -18,22 +18,62 @@ import Foundation
  */
 
 /*思路
-    选择一个值作为中间值
+ 遍历所有子串
+    1、将String转换为Array 方便快速取值
+    2、以left和right记录满足条件的子串 边界值。
+    3、单独对初始字符连续出现的情况 进行left和right调整
+    4
  */
 func longestPalindrome(_ s: String) -> String {
-
-    var subString = ""
-    for i in 0..<s.count {
-        for j in 0..<s.count {
-            if j == 0 {
-            var left = i-1
-            var right = i+1
-            if left<0 || right>s.count-1 {
-                subString =
+    guard s.count > 1 else { return s }
+    var array: [Character] = []
+    let lenght = s.count
+    for c in s {
+        array.append(c)
+    }
+    let cutString: ((Int,Int)->String) = { start, end in
+        let startIndex = s.index(s.startIndex, offsetBy: start)
+        let endIndex = s.index(s.startIndex, offsetBy: end)
+        return String(s[startIndex...endIndex])
+    }
+    var subStr = ""
+    var lastSubStrLenght = 0
+    for i in 0..<lenght {
+        var left = i
+        var right = i
+        //起始值连续相等情况
+        while left-1>=0 {
+            if array[left-1] == array[i] {
+                left -= 1
+            } else {
+                break
             }
         }
 
+        while right+1<=lenght-1 {
+            if array[right+1] == array[i] {
+                right += 1
+            } else {
+                break
+            }
+        }
+        //left 和 right在范围内 则判断对应字符是否相等，出现不相等后结束环
+        while left-1>=0 && right+1<=lenght-1 {
+            if array[left-1] == array[right+1] {
+                left -= 1
+                right += 1
+            } else {
+                break
+            }
+        }
+
+        if right-left+1>lastSubStrLenght  {
+            print(left,right)
+            subStr = cutString(left,right)
+            lastSubStrLenght = right-left+1
+        }
     }
-    return subString
+
+    return subStr
 }
 
