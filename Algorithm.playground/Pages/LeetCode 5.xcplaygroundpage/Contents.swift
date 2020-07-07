@@ -22,7 +22,7 @@ import Foundation
     1、将String转换为Array 方便快速取值
     2、以left和right记录满足条件的子串 边界值。
     3、单独对初始字符连续出现的情况 进行left和right调整
-    4
+    4、
  */
 func longestPalindrome(_ s: String) -> String {
     guard s.count > 1 else { return s }
@@ -38,9 +38,18 @@ func longestPalindrome(_ s: String) -> String {
     }
     var subStr = ""
     var lastSubStrLenght = 0
+    var sameRight = 0
     for i in 0..<lenght {
         var left = i
         var right = i
+        //当剩余子串长度 无法再大于当前最大子串长度退出当前for （执行时间明显降低）
+        if (lenght-1-right)*2+1<lastSubStrLenght {
+            break
+        }
+        //当初始字符连续向右相等时，如果i小于最右边字符index则继续下次循环
+        if i<sameRight {
+            continue
+        }
         //起始值连续相等情况
         while left-1>=0 {
             if array[left-1] == array[i] {
@@ -53,6 +62,7 @@ func longestPalindrome(_ s: String) -> String {
         while right+1<=lenght-1 {
             if array[right+1] == array[i] {
                 right += 1
+                sameRight = right
             } else {
                 break
             }
@@ -77,3 +87,4 @@ func longestPalindrome(_ s: String) -> String {
     return subStr
 }
 
+longestPalindrome("babad")
