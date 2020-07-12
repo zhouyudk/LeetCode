@@ -167,8 +167,12 @@ class Solution {
                 } else {
                     //2 p中不为“*”，判断下一个是否为“*”
                     if pLeft+1 <= pRight && pArr[pLeft+1] == asteriskChar {
-                        pLeft += 2
-                        continue
+                        if pLeft + 2 <= pRight {
+                            pLeft += 2
+                            continue
+                        }
+                        
+                        
                     }
                 }
                 
@@ -220,6 +224,7 @@ class Solution {
         return true
     }
 }
-"aaa"
-"ab*a*c*a"
-Solution().isMatch("ab",".*b*")
+//对于p先压缩 排序 在压缩
+"aabcbcbcaccbcaabc"
+".*a*aa*.*b*.c*.*a*"
+Solution().isMatch("aabcbcbcaccbcaabc",".*a*aa*.*b*.c*.*a*")
