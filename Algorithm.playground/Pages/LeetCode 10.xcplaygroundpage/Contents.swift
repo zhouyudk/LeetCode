@@ -51,6 +51,9 @@ import Foundation
  */
 /*
  思路
+ 对于p
+ 首先进行压缩，将连续出现的a* 和.* 压缩为一个
+ 然后将
  */
 class Solution {
     func isMatch(_ s: String, _ p: String) -> Bool {
@@ -67,6 +70,7 @@ class Solution {
         }
         var sArr: Array<Character> = []
         var pArr: Array<Character> = []
+        var pTmpArr: Array<Character> = []
         /// "."
         let pointChar = Character(".")
         /// "#"
@@ -76,10 +80,18 @@ class Solution {
         for c in s {
             sArr.append(c)
         }
+        for c in p {
+            pTmpArr.append(c)
+        }
+        var i = 0
+        while i < pTmpArr.count {
+            
+        }
         //格式化p
-        //1 将p中的.*转化为#，并将连续的#压缩为1个，a*a*压缩为a*
+
         //2 对于*前后字符相同的情况，将*向右侧移动，如aa*aaa ,转化为aaaaa*
-        var pTmpArr: Array<Character> = []
+
+        //1 a*a*压缩为a*,.*.*压缩为.*
         for c in p {
             if pTmpArr.count >= 3
                 && c == asteriskChar
@@ -90,15 +102,11 @@ class Solution {
             }
         }
         for c in pTmpArr {
-            if c == asteriskChar && pArr.last == pointChar {
-                pArr[pArr.count-1] = wellNumberChar
+            if pArr.count-1>0 && asteriskChar == pArr[pArr.count-1] && c == pArr[pArr.count-2]  {
+                pArr[pArr.count-1] = c
+                pArr.append(asteriskChar)
             } else {
-                if pArr.count-1>0 && asteriskChar == pArr[pArr.count-1] && c == pArr[pArr.count-2]  {
-                    pArr[pArr.count-1] = c
-                    pArr.append(asteriskChar)
-                } else {
-                    pArr.append(c)
-                }
+                pArr.append(c)
             }
         }
         
