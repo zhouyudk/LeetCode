@@ -56,6 +56,69 @@ import Foundation
  然后将
  */
 class Solution {
+    /// "."
+    let pointChar = Character(".")
+    /// "*"
+    let asteriskChar = Character("*")
+    
+    
+    /// 压缩正则表达式P
+    ///
+    /// - Parameter p: 原表达式p
+    /// - Returns: 压缩后p的字符数组
+    func reduceRegularExpression(_ p: String) -> Array<Character> {
+        var pTmpArr: Array<Character> = []
+        var pArr: Array<Character> = []
+        for c in p {
+            pTmpArr.append(c)
+        }
+        var i = 0
+        while i < pTmpArr.count {
+            if i < 2 {
+                pArr.append(pTmpArr[i])
+                i += 1
+            } else if i+1 == pTmpArr.count {
+                if pArr[pArr.count-1] == asteriskChar {
+                    if pArr[pArr.count-2] == pTmpArr[i] {
+                        pArr[pArr.count-1] = pTmpArr[i]
+                        pArr.append(asteriskChar)
+                    } else {
+                        pArr.append(pTmpArr[i])
+                    }
+                } else {
+                    pArr.append(pTmpArr[i])
+                }
+                i += 1
+                continue
+            } else if i+1 < pTmpArr.count {
+                if pArr[pArr.count-1] == asteriskChar {
+                    if pArr[pArr.count-2] == pTmpArr[i] {
+                        if pTmpArr[i+1] == asteriskChar {
+                            i += 2
+                            continue
+                        } else {
+                            pArr[pArr.count-1] = pTmpArr[i]
+                            pArr.append(asteriskChar)
+                            i += 1
+                            continue
+                        }
+                    } else {
+                        pArr.append(pTmpArr[i])
+                        i += 1
+                        continue
+                    }
+                } else {
+                    pArr.append(pTmpArr[i])
+                    i += 1
+                    continue
+                }
+            }
+            
+        }
+//        print(pArr)
+        return pArr
+    }
+    
     func isMatch(_ s: String, _ p: String) -> Bool {
         print(s,"______",p)
         //当表达式为空 则s为空则true不为空则false
@@ -69,45 +132,10 @@ class Solution {
             }
         }
         var sArr: Array<Character> = []
-        var pArr: Array<Character> = []
-        var pTmpArr: Array<Character> = []
-        /// "."
-        let pointChar = Character(".")
-        /// "#"
-        let wellNumberChar = Character("#")
-        /// "*"
-        let asteriskChar = Character("*")
+        var pArr: Array<Character> = reduceRegularExpression(p)
+        
         for c in s {
             sArr.append(c)
-        }
-        for c in p {
-            pTmpArr.append(c)
-        }
-        var i = 0
-        while i < pTmpArr.count {
-            
-        }
-        //格式化p
-
-        //2 对于*前后字符相同的情况，将*向右侧移动，如aa*aaa ,转化为aaaaa*
-
-        //1 a*a*压缩为a*,.*.*压缩为.*
-        for c in p {
-            if pTmpArr.count >= 3
-                && c == asteriskChar
-                && pTmpArr.last == pTmpArr[pTmpArr.count-3] {
-                pTmpArr.removeLast(1)
-            } else {
-                pTmpArr.append(c)
-            }
-        }
-        for c in pTmpArr {
-            if pArr.count-1>0 && asteriskChar == pArr[pArr.count-1] && c == pArr[pArr.count-2]  {
-                pArr[pArr.count-1] = c
-                pArr.append(asteriskChar)
-            } else {
-                pArr.append(c)
-            }
         }
         
         //首先从后往前遍历p 直到找到*为止
@@ -115,28 +143,16 @@ class Solution {
         var pRight = pArr.count-1
 
         while sRight>=0 && pRight>=0 {
-            if pArr[pRight] == wellNumberChar || pArr[pRight] == asteriskChar {
+            if pArr[pRight] == asteriskChar {
                 break
-            }
-            if pArr[pRight] == pointChar || pArr[pRight] == sArr[sRight] {
+            } else if pArr[pRight] == pointChar || pArr[pRight] == sArr[sRight] {
                 sRight -= 1
                 pRight -= 1
                 continue
+            } else if pArr[pRight] != sArr[sRight] {
+                return false
             }
-            return false
         }
-
-//        if sRight < 0 && pRight < 0 {
-//            return true
-//        } else if sRight >= 0 && pRight < 0 {
-//            return false
-//        } else {
-//            if pRight == 0 && pArr[pRight] == wellNumberChar {
-//                return true
-//            } else {
-//                return false
-//            }
-//        }
         
         //sRight 和 pRight 都是大于等于0的
         var sLeft = 0
@@ -149,7 +165,33 @@ class Solution {
                 sLeft += 1
                 pLeft += 1
                 continue
+            } else if pArr[pLeft] == asteriskChar {//只要出现*则比较*的下一个字符
+                //TODO : 当前字符为*时  *前面是字母还是. 
+                if pArr[pLeft-1] == sArr[sLeft] || pArr[pLeft-1] == pointChar  {
+                    sLeft += 1
+                } else {
+                    pLeft += 1
+                }
+                continue
+            } else if pArr[pLeft] != sArr[sLeft] {
+                if pLeft+1 <= pRight {
+                    if pArr[pLeft+1] == asteriskChar{
+                        pLeft += 2
+                        continue
+                    } else {
+                        return false
+                    }
+                }else if pLeft == pRight {
+                    return false
+                }
             }
+            
+            //遍历结束的情况分类
+            // 1 s和p同时遍历完成  肯定是匹配的
+            // 2 s匹配完成  p剩余
+            // 3 p成 s剩余
+            // 4 s 和 p 均有剩余
+            
             //判断是否为“#”
             if pArr[pLeft] == wellNumberChar {
                 if pLeft == pRight {
@@ -231,8 +273,10 @@ class Solution {
         
         return true
     }
+ 
 }
 //对于p先压缩 排序 在压缩
 "aabcbcbcaccbcaabc"
-".*a*aa*.*b*.c*.*a*"
-Solution().isMatch("aabcbcbcaccbcaabc",".*a*aa*.*b*.c*.*a*")
+let p = "a*aaaa*ba*a*ab*b*ac"//".*a*aa*.*b*.c*.*a*"
+//Solution().isMatch("aabcbcbcaccbcaabc",".*a*aa*.*b*.c*.*a*")
+Solution().reduceRegularExpression(p)
