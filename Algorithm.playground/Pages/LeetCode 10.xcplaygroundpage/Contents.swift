@@ -55,6 +55,7 @@ import Foundation
  首先进行压缩，将连续出现的a* 和.* 压缩为一个
  然后将
  */
+/*废弃
 class Solution {
     /// "."
     let pointChar = Character(".")
@@ -132,7 +133,7 @@ class Solution {
             }
         }
         var sArr: Array<Character> = []
-        var pArr: Array<Character> = reduceRegularExpression(p)
+        let pArr: Array<Character> = reduceRegularExpression(p)
         
         for c in s {
             sArr.append(c)
@@ -155,128 +156,104 @@ class Solution {
         }
         
         //sRight 和 pRight 都是大于等于0的
+        //目标为将s遍历完成
         var sLeft = 0
         var pLeft = 0
-        var wellNumIndex = -1//“#”号的index
+        var pointAndAsteriskIndex = -1//“.*”号下一个字符的index
         print(sArr,pArr)
         while sLeft <= sRight && pLeft <= pRight {
+            print("while in",sLeft,pLeft)
             //p中字符为.
             if pArr[pLeft] == pointChar || pArr[pLeft] == sArr[sLeft] {
                 sLeft += 1
                 pLeft += 1
                 continue
             } else if pArr[pLeft] == asteriskChar {//只要出现*则比较*的下一个字符
-                //TODO : 当前字符为*时  *前面是字母还是. 
-                if pArr[pLeft-1] == sArr[sLeft] || pArr[pLeft-1] == pointChar  {
+                //如果是*前是字母则继续将s中连续出现的该字符匹配完
+                if pArr[pLeft-1] == sArr[sLeft] {
                     sLeft += 1
+                    continue
+                } else if pArr[pLeft-1] == pointChar {
+                    //如果*前面是. 则判断*是否为p的最后一个字符，如果是则返回true
+                    //否则从*的下一个字符继续匹配
+                    if pLeft == pRight {
+                        return true
+                    } else {
+                        pLeft += 1
+                        pointAndAsteriskIndex = pLeft
+                        sLeft -= 1
+                        continue
+                    }
                 } else {
+                    //*前的字符和sLeft的字符不相等
                     pLeft += 1
+                    continue
                 }
-                continue
             } else if pArr[pLeft] != sArr[sLeft] {
-                if pLeft+1 <= pRight {
+                if pLeft+1 < pRight {
                     if pArr[pLeft+1] == asteriskChar{
                         pLeft += 2
                         continue
                     } else {
-                        return false
+                        //如果此字符之前出现了.* 则重新冲从*的后一个字符重新匹配
+                        if pointAndAsteriskIndex != -1 {
+                            pLeft = pointAndAsteriskIndex
+                            continue
+                        } else {
+                            return false
+                        }
                     }
-                }else if pLeft == pRight {
-                    return false
-                }
-            }
-            
-            //遍历结束的情况分类
-            // 1 s和p同时遍历完成  肯定是匹配的
-            // 2 s匹配完成  p剩余
-            // 3 p成 s剩余
-            // 4 s 和 p 均有剩余
-            
-            //判断是否为“#”
-            if pArr[pLeft] == wellNumberChar {
-                if pLeft == pRight {
-                    return true
-                } else {
-                    wellNumIndex = pLeft+1
-                    pLeft += 1
-                    continue
-                }
-            }
-            //如果此次遍历的s和p中字符不匹配，
-            
-            if pArr[pLeft] != sArr[sLeft] {
-                //1 p中“*”,则*前的字符已经为s中的字符匹配，并继续匹配s中与*前字符是否相同
-                if pArr[pLeft] == asteriskChar {
-                    if sArr[sLeft] == pArr[pLeft-1] {
-                        sLeft += 1
+                } else if pLeft+1 == pRight || pLeft == pRight {
+                    //如果当前字符不相等&&pLeft之前没有.*，则如果该字符是p的最后一个或是倒数第二个 字符串都不匹配
+                    if pointAndAsteriskIndex != -1 {
+                        pLeft = pointAndAsteriskIndex
                         continue
                     } else {
-                        pLeft += 1
-                        continue
-                    }
-                } else {
-                    //2 p中不为“*”，判断下一个是否为“*”
-                    if pLeft+1 <= pRight && pArr[pLeft+1] == asteriskChar {
-                        if pLeft + 2 <= pRight {
-                            pLeft += 2
-                            continue
-                        }
-                        
-                        
+                        return false
                     }
                 }
-                
-                //当出现“#”后的字符不匹配时
-                if wellNumIndex != -1 {
-                    pLeft = wellNumIndex
-                    sLeft += 1
-                    continue
-                }
-                return false
             }
-            
         }
+
+        print("匹配完成",pLeft,sLeft)
+        //遍历结束的情况分类
+        // 1 s和p同时遍历完成  肯定是匹配的
+        // 2 s匹配完成  p剩余
+        // 3 p成 s剩余
+        // 4 s 和 p 均有剩余（while的目标是将s完成遍历）
         //遍历结束后，p和s都完成遍历 则肯定匹配
-        if sLeft > sRight && pLeft > pRight {
-            return true
+        if sLeft > sRight {
+            var pRemaining: Array<Character> = []
+            while pLeft <= pRight {
+                //如果p剩下的第一个字符为*则跳过
+                if !(pRemaining.count == 0 && pArr[pLeft] == asteriskChar) {
+                    if pArr[pLeft] == asteriskChar {
+                        pRemaining.removeLast()
+                    } else {
+                        pRemaining.append(pArr[pLeft])
+                    }
+                }
+                pLeft += 1
+            }
+            return pRemaining.count == 0
         } else {
-            //如果只有p完成 s位完成则不匹配
-            if sLeft <= sRight {
-                return false
-            }
-            // 如果s完成 则判断p中剩余字符能否匹配长度为0的字符串
-            if pLeft == pRight {
-                return (pArr[pLeft] == wellNumberChar || pArr[pLeft] == asteriskChar)
-            }
-            if pLeft < pRight {
-                if pArr[pRight] != wellNumberChar && pArr[pRight] != asteriskChar {
-                    return false
-                }
-                var isLastEqualToAstAndWellNum = false
-                print(sLeft,sRight,pLeft,pRight)
-                var pResult: Array<Character> = []
-                for i in pLeft...pRight {
-                    if pArr[i] == wellNumberChar {
-                        continue
-                    }
-                    if pArr[i] == asteriskChar {
-                        if pResult.count > 0 {
-                            pResult.removeLast(1)
-                        }
-                        continue
-                    }
-                    pResult.append(pArr[i])
-                }
-                return pResult.count == 0
-            }
+            return false
         }
-        
-        return true
     }
- 
 }
 //对于p先压缩 排序 在压缩
 "aabcbcbcaccbcaabc"
 let p = "a*aaaa*ba*a*ab*b*ac"//".*a*aa*.*b*.c*.*a*"
-//Solution().isMatch("aabcbcbcaccbcaabc",".*a*aa*.*b*.c*.*a*")
-Solution().reduceRegularExpression(p)
+Solution().isMatch("aabcbcbcaccbcaabc",".*a*aa*.*b*.c*.*a*")
+*/
+ */
+
+
+class Solution {
+    func isMatch(_ s: String, _ p: String) -> Bool {
+        var sArr: Array<Character> = []
+        var pArr: Array<Character> = []
+
+        
+    }
+}
