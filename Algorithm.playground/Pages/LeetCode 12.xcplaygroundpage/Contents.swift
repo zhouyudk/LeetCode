@@ -56,54 +56,25 @@ import Foundation
  */
 
 class Solution {
-    let dic = [1000:("M","M","M"),
-               100:("M","D","C"),
-               10:("C","L","X"),
-               1:("X","V","I")]
+    let symbol = ["M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"]
+    let nums = [1000,900,500,400,100,90,50,40,10,9,5,4,1]
     func intToRoman(_ num: Int) -> String {
         guard num < 4000 else { return ""}
         var r = ""
         var tmp = num
-        var b = 1000
-        while tmp != 0 {
-            let tmpR = process(tmp,b)
-            print(tmp,b,tmpR)
-            if tmpR != "" {
-
-                tmp = tmp%b
-                b = b/10
-            } else {
-                b = b/10
+        for i in 0..<nums.count {
+            while tmp >= nums[i] {
+                r += symbol[i]
+                tmp -= nums[i]
             }
-            r += tmpR
+            if tmp == 0 {
+                break
+            }
         }
         return r
     }
-
-    func process(_ num: Int, _ d: Int) -> String {
-        var result = ""
-        var least = num
-        let roman = dic[d]!
-        if least >= 9*d {
-            result += (roman.2+roman.0)
-            least = least - 9*d
-        } else if least >= 5*d {
-            result += roman.1
-            least -= 5*d
-        } else if least >= 4*d {
-            result += (roman.2+roman.1)
-            least -= 4*d
-        }
-
-        if least >= d{
-            for _ in 0..<least/d {
-                result = result + roman.2
-            }
-        }
-        return result
-    }
 }
 
-Solution().intToRoman(1)
+Solution().intToRoman(1201)
 //var dddd = ("M","D","C")
 //print(dddd.0)
