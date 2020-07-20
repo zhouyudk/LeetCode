@@ -55,25 +55,27 @@ func initListNode(_ i: Int) -> ListNode {
 }
 class Solution {
     func removeNthFromEnd(_ head: ListNode?, _ n: Int) -> ListNode? {
-        guard head != nil else { return nil }
+        guard head != nil && head?.next != nil else { return nil }
         var i = 1
-        var tmp: ListNode = head!
+        var tmp: ListNode? = head
         //倒数第n+1个
         var tmpN: ListNode?
 
-        while tmp.next != nil {
+        while tmp != nil {
             if i-1 == n {
                 tmpN = head
-                tmp = tmp.next!
+                tmp = tmp!.next
+                i += 1
             } else if i-1 < n {
-                tmp = tmp.next!
+                tmp = tmp!.next
+                i += 1
             } else {
-                tmp = tmp.next!
+                tmp = tmp!.next
                 tmpN = tmpN?.next
             }
-             i += 1
+            
         }
-        if i == n {
+        if tmpN == nil {
             return head!.next
         } else {
             tmpN?.next = tmpN?.next?.next
@@ -82,6 +84,6 @@ class Solution {
     }
 }
 
-let ln = initListNode(10)
+let ln = initListNode(2)
 ln.printNode()
-Solution().removeNthFromEnd(ln,9)?.printNode()
+Solution().removeNthFromEnd(ln,2)?.printNode()
