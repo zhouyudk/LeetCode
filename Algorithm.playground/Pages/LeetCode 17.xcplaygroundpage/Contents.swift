@@ -29,30 +29,28 @@ import Foundation
  */
 
 class Solution {
-    let digitMap = [2: ["a","b","c"],
-                     3: ["d","e","f"],
-                     4: ["h","i","g"],
-                     5: ["k","l","m"],
-                     6: ["m","n","o"],
-                     7: ["p","q","r"],
-                     8: ["s","t","u"],
-                     9: ["v","w","x","y"]]
-
-    //暴力法
+        let digitMap = ["2": ["a","b","c"],
+                     "3": ["d","e","f"],
+                     "4": ["g","h","i"],
+                     "5": ["j","k","l"],
+                     "6": ["m","n","o"],
+                     "7": ["p","q","r","s"],
+                     "8": ["t","u","v"],
+                     "9": ["w","x","y","z"]]
     func letterCombinations(_ digits: String) -> [String] {
         guard digits.count > 0 else { return [] }
-        var rCount = 1
-        digits.forEach { (c) in
-            rCount *= digitMap[Int(c)]!.count
+        var r = [""]
+        var loopCount = 1//digitMap[String(digits.first!)]!.count
+        for c in digits {
+            var tmpR = [String]()
+            loopCount *= digitMap[String(c)]!.count
+            for i in 0..<loopCount {
+                tmpR.append(r[i/digitMap[String(c)]!.count]+digitMap[String(c)]![i%digitMap[String(c)]!.count])
+            }
+            r = tmpR
         }
-//        var r = digits.first!
-//        var tmp = r
-    }
-    
-    func addChars() {
-        for i in 0...rCount {
-            
-        }
-
+        return r
     }
 }
+
+Solution().letterCombinations("234")
