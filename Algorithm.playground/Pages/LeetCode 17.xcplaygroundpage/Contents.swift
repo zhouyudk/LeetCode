@@ -37,7 +37,7 @@ class Solution {
                      "7": ["p","q","r","s"],
                      "8": ["t","u","v"],
                      "9": ["w","x","y","z"]]
-    func letterCombinations(_ digits: String) -> [String] {
+    func letterCombinations1(_ digits: String) -> [String] {
         guard digits.count > 0 else { return [] }
         var r = [""]
         var loopCount = 1//digitMap[String(digits.first!)]!.count
@@ -50,6 +50,27 @@ class Solution {
             r = tmpR
         }
         return r
+    }
+    //递归--参考题解
+    func letterCombinations(_ digits: String) -> [String] {
+        guard digits.count > 0 else { return [] }
+        digitsArr = Array(digits)
+        for s in digitMap[String(digits.first!)]! {
+            iterateStr(index: 1, str: s)
+        }
+        return result
+    }
+    var result = [String]()
+    var digitsArr = [Character]()
+    func iterateStr(index: Int, str: String) {
+        if index == digitsArr.count {
+            result.append(str)
+            return
+        }
+        for s in digitMap[String(digitsArr[index])]! {
+            let tmpS = str+s
+            iterateStr(index: index+1, str: tmpS)
+        }
     }
 }
 
