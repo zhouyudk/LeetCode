@@ -18,5 +18,7 @@
         <page name='LeetCode 15'/>
         <page name='LeetCode 16'/>
         <page name='LeetCode 17'/>
+        <page name='LeetCode 19'/>
+        <page name='LeetCode 144 二叉树前序遍历'/>
     </pages>
 </playground>
