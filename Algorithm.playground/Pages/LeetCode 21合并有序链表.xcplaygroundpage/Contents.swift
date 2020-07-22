@@ -35,11 +35,11 @@ public class ListNode {
         next?.printNode()
     }
 
-    static func initListNode(_ count: Int) -> ListNode {
+    static func initListNode(_ count: Int, _ multiple: Int) -> ListNode {
         let root = ListNode(0)
         var tmp = root
-        for _ in 0..<count {
-            tmp.next = ListNode(Int(arc4random())%15)
+        for i in 0..<count {
+            tmp.next = ListNode(i*multiple)
             tmp = tmp.next!
         }
         return root.next!
@@ -50,32 +50,25 @@ public class ListNode {
 
 class Solution {
     func mergeTwoLists(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
-        let head = ListNode(0)
-        var tmp = head
-        var l11 = l1
-        var l22 = l2
-        while l11 != nil && l22 != nil {
-            if l11!.val < l22!.val {
-                tmp.next = l11
-                l11 = l11!.next
-            } else {
-                tmp.next = l22
-                l22 = l22!.next
-            }
-            tmp = tmp.next!
+        if l1 == nil {
+            return l2
         }
-        if l11 != nil {
-            tmp.next = l11
+
+        if l2 == nil {
+            return l1
         }
-        if l22 != nil {
-            tmp.next = l22
+        if l1!.val <= l2!.val {
+            l1?.next = mergeTwoLists(l1?.next, l2)
+            return l1
+        } else {
+            l2?.next = mergeTwoLists(l1, l2?.next)
+            return l2
         }
-        return head.next
     }
 }
 
-let l1 = ListNode.initListNode(5)
-let l2 = ListNode.initListNode(5)
+let l1 = ListNode.initListNode(5,2)
+let l2 = ListNode.initListNode(5,3)
 l1.printNode()
 print("--------------")
 l2.printNode()
