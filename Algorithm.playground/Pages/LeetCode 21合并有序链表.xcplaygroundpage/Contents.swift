@@ -53,7 +53,6 @@ class Solution {
         if l1 == nil {
             return l2
         }
-
         if l2 == nil {
             return l1
         }
