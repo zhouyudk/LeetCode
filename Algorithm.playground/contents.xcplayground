@@ -29,5 +29,6 @@
         <page name='LeetCode 24两两交换链表节点'/>
         <page name='LeetCode 25K个一组翻转链表###'/>
         <page name='LeetCode 26删除数组重复项#'/>
+        <page name='LeetCode 27删除数组中所有的指定值#'/>
     </pages>
 </playground>
