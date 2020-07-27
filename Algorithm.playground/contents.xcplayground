@@ -32,5 +32,6 @@
         <page name='LeetCode 27删除数组中所有的指定值#'/>
         <page name='LeetCode 28实现strStr()'/>
         <page name='LeetCode 29 整数除法'/>
+        <page name='LeetCode 188 数组旋转#'/>
     </pages>
 </playground>
