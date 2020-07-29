@@ -34,5 +34,6 @@
         <page name='LeetCode 29 整数除法'/>
         <page name='LeetCode 188 数组旋转#'/>
         <page name='LeetCode 88合并连个有序数组#'/>
+        <page name='LeetCode 242 有效的字母异位词#'/>
     </pages>
 </playground>
