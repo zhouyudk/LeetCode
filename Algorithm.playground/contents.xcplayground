@@ -20,15 +20,19 @@
         <page name='LeetCode 17'/>
         <page name='LeetCode 19 删除链表倒数第n个节点 #'/>
         <page name='LeetCode 20有效括号'/>
+        <page name='LeetCode 144 二叉树前序遍历 #'/>
         <page name='LeetCode 21合并有序链表'/>
-        <page name='LeetCode 22括号生成'/>
-        <page name='LeetCode 23合并K个排序链表###'/>
         <page name='LeetCode 98验证二叉搜索树 #'/>
         <page name='LeetCode 144 二叉树的最大深度 #'/>
-        <page name='LeetCode 144 二叉树前序遍历 #'/>
+        <page name='LeetCode 22括号生成'/>
+        <page name='LeetCode 23合并K个排序链表###'/>
         <page name='LeetCode 24两两交换链表节点'/>
         <page name='LeetCode 25K个一组翻转链表###'/>
         <page name='LeetCode 26删除数组重复项#'/>
         <page name='LeetCode 27删除数组中所有的指定值#'/>
+        <page name='LeetCode 28实现strStr()'/>
+        <page name='LeetCode 29 整数除法'/>
+        <page name='LeetCode 188 数组旋转#'/>
+        <page name='LeetCode 88合并连个有序数组#'/>
     </pages>
 </playground>
