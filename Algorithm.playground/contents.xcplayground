@@ -35,5 +35,7 @@
         <page name='LeetCode 188 数组旋转#'/>
         <page name='LeetCode 88合并连个有序数组#'/>
         <page name='LeetCode 242 有效的字母异位词#'/>
+        <page name='LeetCode 1021删除最外层的括号#'/>
+        <page name='LeetCode 84柱状图中最大的矩形###'/>
     </pages>
 </playground>
