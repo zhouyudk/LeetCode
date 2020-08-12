@@ -42,5 +42,7 @@
         <page name='LeetCode 31下一个排列##'/>
         <page name='LeetCode 32最长有效括号###'/>
         <page name='LeetCode 33.搜索旋转排序数组##'/>
+        <page name='LeetCode 36. 有效的数独##'/>
+        <page name='LeetCode 130被围绕的区域##'/>
     </pages>
 </playground>
