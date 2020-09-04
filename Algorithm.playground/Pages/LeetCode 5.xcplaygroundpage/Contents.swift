@@ -26,11 +26,9 @@ import Foundation
  */
 func longestPalindrome(_ s: String) -> String {
     guard s.count > 1 else { return s }
-    var array: [Character] = []
-    let lenght = s.count
-    for c in s {
-        array.append(c)
-    }
+    let array: [Character] = Array(s)
+    let lenght = array.count
+
     let cutString: ((Int,Int)->String) = { start, end in
         let startIndex = s.index(s.startIndex, offsetBy: start)
         let endIndex = s.index(s.startIndex, offsetBy: end)
@@ -88,3 +86,9 @@ func longestPalindrome(_ s: String) -> String {
 }
 
 longestPalindrome("babad")
+
+//动态规划 切接
+//TODO :
+func longestPalindrome(s: String) -> String {
+    return ""
+}
