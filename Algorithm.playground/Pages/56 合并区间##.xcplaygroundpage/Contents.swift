@@ -7,39 +7,37 @@ import Foundation
 class Solution {
     func merge(_ intervals: [[Int]]) -> [[Int]] {
         guard intervals.count>1 else { return intervals}
-        let intervals = intervals.sorted(by: { $0[0] < $1[0] })
         var res = [intervals.first!]
+        var range = intervals.first!
         for i in 1..<intervals.count {
-            let range = intervals[i]
-            for j in 0..<res.count {
-                var r = res[j]
-                if range[1]<r[0] || range[0]>r[1] {
-                    if j+1 >= res.count {
-                        res.append(range)
-                    }
-                } else if range[0]>=r[0] {
-                    if range[1]>r[1] {
-                        r[1] = range[1]
-                        res[j] = r
-                    }
-                    break
-                } else if range[1]<=r[1] {
-                    if range[0]<r[0] {
-                        r[0] = range[0]
-                        res[j] = r
-                    }
-                    break
-                } else if range[0]<r[0] && range[1]>r[1] {
-                    res[j] = range
-                    break
-                }
+            var r = intervals[i]
+            print(r)
+            if range[1]<r[0] || range[0]>r[1] { //[1,3]  [4,6]
+                res.append(r)
+            } else if range[1] > r[1] && range[0] < r[0] { //[1,4] [2,3]
+                continue
+            } else if range[0]>=r[0] && range[1] >= r[1] {// [1,4] [0,3]
+                range[0] = r[0]
+                res[0] = range
+            } else if range[0]<=r[0] && range[1] <= r[1] { // [1, 4] [2,5]
+                range[1] = r[1]
+                res[0] = range
+            } else if range[1] < r[1] && range[0] > r[0] { // [1,4] [0,5]
+                range = r
+                res[0] = range
             }
-            print(res)
         }
-        return res
+        print(res)
+        //结束标识
+        if res.count == intervals.count {
+            return intervals
+        } else {
+            return merge(res)
+        }
     }
 }
 
-let dd = [[2,3],[4,5],[6,7],[8,9],[1,10]]
+let dd = [[1,4],[1,5]]
 
 Solution().merge(dd)
+
