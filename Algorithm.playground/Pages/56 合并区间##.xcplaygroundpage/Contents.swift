@@ -5,35 +5,21 @@ import Foundation
 //https://leetcode-cn.com/problems/merge-intervals/
 
 class Solution {
+    //暴力法  直接排序 (最优解)
+    //排序是最快的前提， 细节优化  可以提升执行效率  排序后可以 踢出多于的比较
     func merge(_ intervals: [[Int]]) -> [[Int]] {
         guard intervals.count>1 else { return intervals}
+        let intervals = intervals.sorted(by: { $0[0] < $1[0] })
         var res = [intervals.first!]
-        var range = intervals.first!
         for i in 1..<intervals.count {
-            var r = intervals[i]
-            print(r)
-            if range[1]<r[0] || range[0]>r[1] { //[1,3]  [4,6]
-                res.append(r)
-            } else if range[1] > r[1] && range[0] < r[0] { //[1,4] [2,3]
-                continue
-            } else if range[0]>=r[0] && range[1] >= r[1] {// [1,4] [0,3]
-                range[0] = r[0]
-                res[0] = range
-            } else if range[0]<=r[0] && range[1] <= r[1] { // [1, 4] [2,5]
-                range[1] = r[1]
-                res[0] = range
-            } else if range[1] < r[1] && range[0] > r[0] { // [1,4] [0,5]
-                range = r
-                res[0] = range
+            if intervals[i][0]>res[res.count-1][1] {
+                res.append(intervals[i])
+            } else {
+                res[res.count-1][1] = max(intervals[i][1], res[res.count-1][1])
             }
+            print(res)
         }
-        print(res)
-        //结束标识
-        if res.count == intervals.count {
-            return intervals
-        } else {
-            return merge(res)
-        }
+        return res
     }
 }
 
