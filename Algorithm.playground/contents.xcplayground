@@ -53,5 +53,6 @@
         <page name='56 合并区间##'/>
         <page name='57 插入区间###'/>
         <page name='59螺旋矩阵2##'/>
+        <page name='60第k个排列'/>
     </pages>
 </playground>
