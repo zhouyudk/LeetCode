@@ -13,22 +13,20 @@ class Solution {
         for i in 1...n {
             arr.append(i)
         }
-        var kMap = [Int: Int]()
         var nn = n
         var k = k
         var res = ""
-        while nn>0 {
-            var r = k/nn
+        while nn>2 {
+            let r = k/(nn-1)
             k = k%nn
-            print(r , arr)
-            res += "\(arr[r])"
-            arr.remove(at: r)
+            print(r ,k , nn, arr)
+            res += "\(arr[r-1])"
+            arr.remove(at: r-1)
             nn -= 1
         }
-//        res += "\(arr.first!)"
         return res
     }
 }
 
-Solution().getPermutation(4,4)
+Solution().getPermutation(3,2)
 
