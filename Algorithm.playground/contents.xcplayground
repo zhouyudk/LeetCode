@@ -53,6 +53,10 @@
         <page name='56 合并区间##'/>
         <page name='57 插入区间###'/>
         <page name='59螺旋矩阵2##'/>
-        <page name='60第k个排列'/>
+        <page name='60第k个排列###'/>
+        <page name='61旋转链表##'/>
+        <page name='62不同路径##'/>
+        <page name='63不同路径2##'/>
+        <page name='64最小路径和##'/>
     </pages>
 </playground>
