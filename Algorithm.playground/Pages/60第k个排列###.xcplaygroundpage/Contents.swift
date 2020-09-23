@@ -4,11 +4,14 @@ import Foundation
 
 //https://leetcode-cn.com/problems/permutation-sequence/
 
+// 以每个数开始的个数为n-1的阶乘，以此直接推导
+// 当然也可以采用 依次加1的方式 直到加到k
 class Solution {
     func getPermutation(_ n: Int, _ k: Int) -> String {
         if n < 1 { return "" }
         if n == 1 { return "1" }
-        if k/(n-1) > n { return "" }
+        let nf = factorial(n-1)
+        if k/(nf) > n || (k/(nf) == n && k%(nf)>0) { return "" }
         var arr = [Int]()
         for i in 1...n {
             arr.append(i)
@@ -17,31 +20,35 @@ class Solution {
         var k = k
         var res = ""
 
-        var total = 1
-        for i in 1..<n {
-            total *= i
-        }
-
-        while nn>0 {
-            if k <= total {
-                res += "\(arr[0])"
-                arr.remove(at: 0)
-                total = total/nn
-            } else {
-                let r = (k-1)/total
-                k = (k-1)%total
-                print(r ,k ,total, arr)
-                res += "\(arr[r])"
-                arr.remove(at: r)
-                total = total/nn
+        while nn >= 0 {
+            if nn == 0 {
+                res += "\(arr.last!)"
+                break
             }
-
+            let nnf = factorial(nn)
+            if k%nnf == 0 {
+                res += "\(arr[k/nnf-1])"
+                arr.remove(at: k/nnf-1)
+                k = nnf
+            } else {
+                res += "\(arr[k/nnf])"
+                arr.remove(at: k/nnf)
+                k = k%nnf
+            }
             nn -= 1
         }
         return res
     }
 
+    func factorial(_ i: Int) -> Int {
+        var r = 1
+        for j in 1...i {
+            r *= j
+        }
+        return r
+    }
 }
 
-Solution().getPermutation(3,2)
+
+Solution().getPermutation(4,5)
 
