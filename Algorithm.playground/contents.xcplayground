@@ -59,5 +59,7 @@
         <page name='63不同路径2##'/>
         <page name='64最小路径和##'/>
         <page name='77组合##'/>
+        <page name='80 删除排序数组中的重复项 II##'/>
+        <page name='81. 搜索旋转排序数组 II##'/>
     </pages>
 </playground>
